@@ -1,0 +1,74 @@
+/* Stéphane Barthélemy (20084771) */
+/* IFT1142 - TP1 */
+
+body {
+    margin-bottom:50px;
+}
+
+/* Mise en formes de la table */
+table {
+    font-family: arial, sans-serif;
+	border-collapse: collapse;
+}
+
+td, th {
+    border: 1px solid #66A;
+    text-align: left;
+    padding: 8px;
+}
+thead {
+    background:#bbf;
+}
+tr:nth-child(even) {
+    background-color: #ddf;
+}
+
+.invisible{
+	visibility: hidden;
+}
+.table-data{
+	/*overflow-y:scroll;
+	display:inline-block;
+	max-height: 400px;*/
+}
+
+#wrapper { 
+	position: absolute;
+	top: 60px;
+	left: 0;
+	bottom: 50px;
+	right: 0;
+	background: blue;
+	overflow-y: scroll;
+	margin: auto;
+    width: 100%;
+  }
+#wrapper div { min-height: 100%; }
+
+
+
+/* Texte centré */
+.centrer-texte{	
+	text-align:center;
+}
+
+
+/* Positionnement des images de validation en bas de page */
+.page-footer {
+	position: fixed; 
+    bottom: 10px;
+    left: 10px;
+    right: 10px;
+	height: 50px;
+	
+    clear: both;
+	/*width: 100%;*/
+}
+
+.page-footer .leftSide {
+    float: left;
+}
+
+.page-footer .rightSide {
+    float: right;
+}
