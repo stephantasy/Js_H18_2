@@ -86,7 +86,7 @@ ol li
   text-align: center;
   margin: 20px auto;}
 
-#main, #logo, #menubar, #site_content, #footer
+#main, #logo, #menubar, #siteContent, #footer
 { margin-left: auto; 
   margin-right: auto;}
 
@@ -174,8 +174,9 @@ ul#menu li a
 ul#menu li a:hover, ul#menu li.selected a, ul#menu li.selected a:hover
 { color: #FFF;}
 
-#site_content
+#siteContent
 { width: 845px;
+  height: 500px;
   overflow: hidden;
   margin: 0 auto 0 auto;
   padding: 25px 20px 20px 33px;
@@ -264,8 +265,13 @@ ul#menu li a:hover, ul#menu li.selected a, ul#menu li.selected a:hover
   height: 0;
   border-top: 1px solid #D9D5CF;
   border-bottom: 1px solid #FFF;
-  margin: 0 0 20px 0;}
-  
+  margin: 0 0 20px 0;
+}
+ 
+.invisible{
+	display: none;
+}
+
 table
 { margin: 10px 0 30px 0;}
 

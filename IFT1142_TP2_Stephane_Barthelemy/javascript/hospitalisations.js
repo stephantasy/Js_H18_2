@@ -42,23 +42,82 @@ var hospitalisations = [
 ]	
 
 
+function initContent(){	
+	var choixPatient = document.getElementById("choixPatient");
+	choixPatient.style.display='none'; 	
+	var choixSecond = document.getElementById("choixSecond");
+	choixSecond.style.display='none';	
+	var tableauData = document.getElementById("tableauData");
+	tableauData.style.display='none';	
+}
+
 function displayTableau(tableau){		
 	var tableauData = document.getElementById("tableauData");
-	tableauData.style.visibility='visible'; 	
+	tableauData.style.display='block'; 	
 	tableauData.innerHTML = "";
 	tableauData.appendChild(getTableau(tableau));
 }
 
 function displayPatients(){	
-      displayTableau(patients);
+	initContent();
+    displayTableau(patients);
 }
 
 function displayEtablissements(){
+	initContent();
 	displayTableau(etablissements);
 }
 
 function displayHospitalisations(){
+	initContent();
 	displayTableau(hospitalisations);
+}
+
+function displayHospPatient(){
+	initContent();
+	// On fait apparaitre le block traité
+	var choixPremier = document.getElementById("choixPatient");
+	choixPremier.style.display='block';
+	// 	Remplissage du Select	
+	var selectPatient = document.getElementById("selectPatient");
+	selectPatient.options.length = 0;
+	selectPatient.options[0] = new Option("Choisir...");
+	for(var p in patients){
+		selectPatient.options[selectPatient.options.length] = new Option(patients[p].dossier + " (" + patients[p].nom + " " + patients[p].prenom + ")");
+	}	
+}
+
+function displayHospPatientData(){	
+	var selectPatient = document.getElementById("selectPatient");
+	var selected = selectPatient.selectedIndex -1;	// Élement choisi
+	// Si on a choisi un patient
+	if(selected >= 0){
+		var dossier = patients[selectPatient.selectedIndex-1].dossier;		
+		var tabHosp = [];
+		var pos = 0;
+		// Récupération des hospitalisation du patient
+		for(var h in hospitalisations){
+			if(hospitalisations[h].dossier === dossier){
+				tabHosp[pos++] = hospitalisations[h];
+			}
+		}
+		if(tabHosp.length > 0){
+			// On affiche le tableau
+			displayTableau(tabHosp);
+			statusInfo = document.getElementById("statusInfo");
+			statusInfo.innerHTML = "&nbsp;"
+		}else{
+			statusInfo = document.getElementById("statusInfo");
+			statusInfo.innerHTML = "Aucune hospitalisation pour ce patient."
+			var tableauData = document.getElementById("tableauData");
+			tableauData.style.display='none';		
+		}
+	}
+	// Sinon on cache le tableau
+	else{
+		var tableauData = document.getElementById("tableauData");
+		tableauData.style.display='none';
+	}
 }
 
 // On ôte la class "selected" de tous les éléments de la liste et on l'applique à celle sélectionnée
@@ -72,15 +131,10 @@ function setSelected(current){
 	current.setAttribute("class","selected");
 }
 
-function kiki(){
-	var ele = document.getElementById("tableData");
-	alert("width = " + window.getComputedStyle(ele).width);
-}
-
+// Construction de la Table avec les données reçues en paramètre
 function getTableau(tab){
 
 	var nbElement = tab.length;
-
 	var table = document.createElement("table");
 	table.setAttribute("id", "tableData");	
 	var tableHeader = document.createElement("thead");
@@ -100,7 +154,6 @@ function getTableau(tab){
 		row.appendChild(headerCell);
 	}
 
-
 	//Add the data rows.
 	for (var i = 0; i < nbElement; i++) {
 		row = tableBody.insertRow(-1);
@@ -110,11 +163,9 @@ function getTableau(tab){
 		}
 	}
 
+	// Construct the Table
 	table.appendChild(tableHeader);
-	table.appendChild(tableBody);
-
-	
-
+	table.appendChild(tableBody);	
 	return table;
 }
 

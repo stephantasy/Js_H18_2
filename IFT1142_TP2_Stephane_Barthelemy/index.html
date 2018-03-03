@@ -22,9 +22,10 @@
   <div id="main">
     <div id="header">
 
+      
+      <!-- TITRE -->
       <div id="logo">
         <div id="logo_text">
-          <!-- class="logo_colour", allows you to change the colour of the text -->
           <h1><a href="index.html">simple<span class="logo_colour">style_2</span></a></h1>
           <h2>Simple. Contemporary. Website Template.</h2>
         </div>
@@ -34,46 +35,49 @@
         </div>
       </div>
 
+
+      <!-- BARRE DE MENU -->
       <div id="menubar">
         <ul id="menu">
-          <!-- put class="selected" in the li tag for the selected page - to highlight which page you're on -->
           <li onclick="displayPatients(); setSelected(this);"><a href="#">Patients</a></li>
           <li onclick="displayEtablissements(); setSelected(this);"><a href="#">Établissements</a></li>
           <li onclick="displayHospitalisations(); setSelected(this);"><a href="#">Hospitalisations</a></li>
-          <li onclick="setSelected(this);"><a href="#">Hospitalisations<br/>par patient</a></li>
-          <li onclick="setSelected(this);"><a href="#">Hospitalisations<br/>par établissement<br/>ou par spécialité</a></li>
+          <li onclick="displayHospPatient(); setSelected(this);"><a href="#">Hospitalisations<br/>par patient</a></li>
+          <li onclick="setSelected(this);"><a href="#">Hospitalisations<br/>par établissement<br/>et par spécialité</a></li>
         </ul>
       </div>
     </div>
 
-    <div id="site_content">
+    <!-- CONTENU -->
+    <div id="siteContent">
 
-        <div id="wrapper">
-            <div id="tableauData"  class="invisible table-data">
-            </div>
+      <!-- Select 1 -->
+      <div id="choixPatient"  class="invisible">
+        Veuillez coisir le code du patient<br/>
+        <select id="selectPatient" onchange="displayHospPatientData();"></select>
+      </div>
+
+      <!-- Tableau -->
+      <div id="tableauData">
+      </div>
+
+      <!-- Select 2 -->
+      <div id="choixSecond"  class="invisible">
+          <select id="selectSecond"></select>
         </div>
-        
-      <!--<div id="content">
-        <!-- insert the page content here 
-        <h1>Welcome to the simplestyle_2 template</h1>
-        <p>This standards compliant, simple, fixed width website template is released as an 'open source' design (under a <a href="http://creativecommons.org/licenses/by/3.0">Creative Commons Attribution 3.0 Licence</a>), which means that you are free to download and use it for anything you want (including modifying and amending it). All I ask is that you leave the 'design from HTML5webtemplates.co.uk' link in the footer of the template, but other than that...</p>
-        <p>This template is written entirely in <strong>HTML5</strong> and <strong>CSS</strong>, and can be validated using the links in the footer.</p>
-        <p>You can view more free HTML5 web templates <a href="http://www.html5webtemplates.co.uk">here</a>.</p>
-        <p>This template is a fully functional 5 page website, with an <a href="examples.html">examples</a> page that gives examples of all the styles available with this design.</p>
-        <h2>Browser Compatibility</h2>
-        <p>This template has been tested in the following browsers:</p>
-        <ul>
-          <li>Internet Explorer 8</li>
-          <li>Internet Explorer 7</li>
-          <li>FireFox 3.5</li>
-          <li>Google Chrome 6</li>
-          <li>Safari 4</li>
-        </ul>
-      </div>-->
 
     </div>
+
+    <!-- STATUS -->
+    <div id="status">
+      <span id="statusInfo">&nbsp;</span>    
+  </div>
+
+
+    <!-- CONTENU -->
     <div id="footer">
       Copyright &copy; simplestyle_2 | <a href="http://validator.w3.org/check?uri=referer">HTML5</a> | <a href="http://jigsaw.w3.org/css-validator/check/referer">CSS</a> | <a href="http://www.html5webtemplates.co.uk">design from HTML5webtemplates.co.uk</a>
+      <!-- Source : https://www.html5webtemplates.co.uk/templates/simplestyle_2/index.html -->
     </div>
   </div>
 </body>
