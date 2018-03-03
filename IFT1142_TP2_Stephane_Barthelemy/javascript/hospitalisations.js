@@ -42,37 +42,34 @@ var hospitalisations = [
 ]	
 
 
-/*
- * Initialisation de la page
- */
-function initialization(){
-	
-      var tableauData = document.getElementById("tableauData");
-	  tableauData.style.visibility='visible'; 	
-	  tableauData.innerHTML = "";
+function displayTableau(tableau){		
+	var tableauData = document.getElementById("tableauData");
+	tableauData.style.visibility='visible'; 	
+	tableauData.innerHTML = "";
+	tableauData.appendChild(getTableau(tableau));
+}
 
-	  //return 0;
+function displayPatients(){	
+      displayTableau(patients);
+}
 
-	  //tableauData.appendChild(getTableau(patients));
-	  //tableauData.appendChild(getTableau(etablissements));
-	  tableauData.appendChild(getTableau(hospitalisations));
+function displayEtablissements(){
+	displayTableau(etablissements);
+}
 
-	  var table = getTableau(hospitalisations)
+function displayHospitalisations(){
+	displayTableau(hospitalisations);
+}
 
-	  //var popo = table.width;
-	var width = document.getElementById("tableauData").offsetheight;
-	var height = table.style.offsetheight;
-	var width2 = table.style.width;
-	var height2 = table.style.height;
-	
-	/*alert("width = " + width + " ; height = " + height + 
-			"\nwidth = " + width2 + " ; height = " + height2);*/
-	//alert("width = " + width);
-	var ele = document.getElementById("tableData");
-	var w = window.getComputedStyle(ele).width;
-
-	document.getElementById("wrapper").setAttribute("style","width:" + w + ";");
-
+// On ôte la class "selected" de tous les éléments de la liste et on l'applique à celle sélectionnée
+function setSelected(current){
+	var menu = document.getElementById("menu").childNodes;
+	for(var v in menu){
+		if(menu[v].nodeName === "LI"){
+			menu[v].setAttribute("class","");
+		}
+	}
+	current.setAttribute("class","selected");
 }
 
 function kiki(){

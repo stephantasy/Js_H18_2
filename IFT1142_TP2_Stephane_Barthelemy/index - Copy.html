@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<!-- Stéphane Barthélemy (20084771) -->
+<!-- 		IFT1142 - TP1		    -->
+<html lang="fr">
+	<head>
+		<!-- TITRE -->
+		<title>Sélection de repas</title>
+		
+		<!-- META -->
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		
+		<!-- Style lié (fichier externe) -->	
+		<link rel="stylesheet" type="text/css" href="css/style.css">
+		
+		<!-- Javascript (fichier externe) -->	
+		<script src="javascript/hospitalisations.js"></script>
+	</head>
+
+	<body onLoad="initialization()">
+
+		<!-- Entête de la page -->
+		<header>
+            <button onclick="kiki()">Click me</button>
+            <h3><u>Salut ! Voici des trucs : </u></h3>
+            <br/>
+		</header>
+		
+        <!-- Coeur de la page -->
+        <div id="wrapper">
+            <div id="tableauData"  class="invisible table-data">
+            </div>
+        </div>
+        <br/>
+        
+		
+		<!-- ********************* -->
+		<!--  LIENS DE VALIDATION  -->
+		<!-- ********************* -->	
+		<div class="page-footer">
+			
+            <hr/><!-- ligne de séparation -->
+            
+			<!-- HTML -->
+			<div class="leftSide">
+				<a href="http://validator.w3.org/check?uri=referer"><img id="ValidationXHTML" src="images/valid_xhtml.png" alt="Validation HTML" /></a>
+			</div>
+			
+			<!-- CSS -->
+			<div class="rightSide">
+				<a href="http://jigsaw.w3.org/css-validator/check/referer"><img id="ValidationCSS" src="images/valid_css.png" alt="Validation CSS" /></a>
+			</div>
+			
+			<!-- DEBUG : permet de charger la page depuis le serveur web de la DESI et de tester les liens de validation -->
+			<div class="centrer-texte">
+				<a href="http://www-desi.iro.umontreal.ca/~barthste/ift1142/TP1/index.html">http://www-desi.iro.umontreal.ca/~barthste/ift1142/TP1/index.html</a>
+			</div>
+		</div>		
+	</body>
+</html>
