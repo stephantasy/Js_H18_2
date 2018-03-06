@@ -45,116 +45,95 @@ var hospitalisations = [
 const MSG_NBSP = "&nbsp;";
 const MSG_CHOISIR = "Choisir...";
 const MSG_LISTE_HOSPITALISATION = "Liste des hospitalisations";
+const MSG_LISTE_ACTS_PAR_SPECIALITE = "Liste des actes pour la spécialité choisie";
 const MSG_LISTE_PATIENTS = "Liste des patients";
 const MSG_LISTE_ETABLISSEMENT = "Liste des établissements";
 const MSG_NO_HOSPITALISATION = "Aucune hospitalisation pour ce patient";
 const MSG_INFO_PATIENT = "Information sur le patient";
+const MSG_INFO_ETABLISSEMENT = "Information sur l'établissement";
 
 // Initialisation 
 function initContent(displayPresentation){
-	// On cache les zones de Select	et de tableau
-	var choixPatient = document.getElementById("choixPatient");
-	choixPatient.style.display='none'; 	
-	var choixEtablissement = document.getElementById("choixEtablissement");
-	choixEtablissement.style.display='none';
-	var choixSpecialite = document.getElementById("choixSpecialite");
-	choixSpecialite.style.display='none';	
-	var zoneTableau = document.getElementById("zoneTableau");
-	zoneTableau.style.display='none';
-	// On vide les tableaux
-	cleanTableauSimple();
-	cleanTableauFull();
-	// On vide les champs d'informations/Status
-	var infoTableauSimple = document.getElementById("infoTableauSimple");
-	infoTableauSimple.innerText = "";
-	infoTableauSimple.style.display = 'none';
-	var infoTableauFull = document.getElementById("infoTableauFull");
-	infoTableauFull.innerText = "";
-	infoTableauFull.style.display = 'none';
-	fillStatus(MSG_NBSP);
+	// On cache les zones de Select
+	hideElement("choixPatient");
+	hideElement("choixEtablissement");
+	hideElement("choixSpecialite");
+	// On vide les tableaux et on les caches
+	cleanElement("tableauPresentation");
+	cleanElement("tableauData");
+	hideElement("zoneTableau");
+	// On vide les champs de Status/Information
+	cleanElement("tableauPresentationInfo");
+	hideElement("tableauPresentationInfo");
+	cleanElement("tableauDataInfo");
+	hideElement("tableauDataInfo");
+	fillElement("statusInfo", MSG_NBSP);
 	if(displayPresentation){
 		// On affiche la présentation par défaut
-		var defaultPresentation = document.getElementById("defaultPresentation");
-		defaultPresentation.style.display='block';
+		displayElement("defaultPresentation");
 	}else{
 		// On cache la présentation par défaut
-		var defaultPresentation = document.getElementById("defaultPresentation");
-		defaultPresentation.style.display='none';
+		hideElement("defaultPresentation");
 	}
 }
 
-
-// On affiche la présentation par défaut
-function displayDefaultPresentation(){
-	var defaultPresentation = document.getElementById("defaultPresentation");
-	defaultPresentation.style.display='block';
+// Cache l'élément demandé
+function hideElement(name){	
+	var element = document.getElementById(name);
+	element.style.display='none';
 }
 
-function displayTableau(){		
-	var zoneTableau = document.getElementById("zoneTableau");
-	zoneTableau.style.display='block'; 	
-}
-function hideTableau(){		
-	var zoneTableau = document.getElementById("zoneTableau");
-	zoneTableau.style.display='none'; 	
-}
-function cleanTableauSimple(){
-	var tableauDataSimple = document.getElementById("tableauDataSimple");
-	tableauDataSimple.innerHTML = "";
-}
-function cleanTableauFull(){
-	var tableauDataFull = document.getElementById("tableauDataFull");
-	tableauDataFull.innerHTML = "";
+// Affiche l'élément demandé
+function displayElement(name){	
+	var element = document.getElementById(name);
+	element.style.display='block';
 }
 
-function fillTableauSimple(tableau, message){
-	cleanTableauSimple();
+// Rempli l'élément demandé avec le message passé en paramètre
+function fillElement(name, msg){	
+	var element = document.getElementById(name);
+	element.innerHTML = msg;
+}
+
+// Vide le contenu du tableau demandé (ainsi que l'information associée)
+function cleanElement(name){
+	var element = document.getElementById(name);
+	element.innerHTML = "";
+}
+
+// Rempli le tableau demandé avec le tableau passé en paramètre et rempli le message (si fourni)
+function fillTableau(name, data, message){
+	cleanElement(name);
 	if(message){
-		var infoTableauSimple = document.getElementById("infoTableauSimple");
-		infoTableauSimple.innerText = message;
-		infoTableauSimple.style.display = 'block';
+		displayElement(name + "Info");
+		fillElement(name + "Info", message);
 	}
-	tableauDataSimple.appendChild(getTableau(tableau, true));
-}
-
-function fillTableauFull(tableau, message){
-	cleanTableauFull();
-	if(message){
-		var infoTableauFull = document.getElementById("infoTableauFull");
-		infoTableauFull.innerText = message;
-		infoTableauFull.style.display = 'block';
-	}
-	tableauDataFull.appendChild(getTableau(tableau, true));
-}
-
-function fillStatus(msg){	
-	statusInfo = document.getElementById("statusInfo");
-	statusInfo.innerHTML = msg;
+	var tableau = document.getElementById(name);
+	tableau.appendChild(getTableau(data, true));
 }
 
 function displayPatients(){	
 	initContent(false);
-	fillTableauFull(patients, MSG_LISTE_PATIENTS);
-	displayTableau();
+	fillTableau("tableauData", patients, MSG_LISTE_PATIENTS);
+	displayElement("zoneTableau");
 }
 
 function displayEtablissements(){
 	initContent(false);
-	fillTableauFull(etablissements, MSG_LISTE_ETABLISSEMENT);
-	displayTableau();
+	fillTableau("tableauData", etablissements, MSG_LISTE_ETABLISSEMENT);
+	displayElement("zoneTableau");
 }
 
 function displayHospitalisations(){
 	initContent(false);
-	fillTableauFull(hospitalisations, MSG_LISTE_HOSPITALISATION);
-	displayTableau();
+	fillTableau("tableauData", hospitalisations, MSG_LISTE_HOSPITALISATION);
+	displayElement("zoneTableau");
 }
 
 function displayHospByPatient(){
 	initContent(false);
 	// On fait apparaitre le block traité
-	var choixPremier = document.getElementById("choixPatient");
-	choixPremier.style.display='block';
+	displayElement("choixPatient");
 	// 	Remplissage du Select	
 	var selectPatient = document.getElementById("selectPatient");
 	selectPatient.options.length = 0;
@@ -166,10 +145,9 @@ function displayHospByPatient(){
 
 function displayHospByPatientData(){	
 	// On cache le select	
-	var choixPatient = document.getElementById("choixPatient");
-	choixPatient.style.display='none';
+	hideElement("choixPatient");
 
-	// On affiche les tableaux
+	// Patient choisi
 	var selectPatient = document.getElementById("selectPatient");
 	var selected = selectPatient.selectedIndex -1;	// Élement choisi
 	
@@ -181,10 +159,9 @@ function displayHospByPatientData(){
 		var tabInfoPatient = [infoPatient];
 
 		// Affichage des informations sur le patient
-		fillTableauSimple(tabInfoPatient, MSG_INFO_PATIENT);
+		fillTableau("tableauPresentation", tabInfoPatient, MSG_INFO_PATIENT);
 
 		// Récupération des hospitalisation du patient
-		pos = 0;
 		for(var h in hospitalisations){
 			if(hospitalisations[h].dossier === infoPatient.dossier){
 				tabHosp[pos++] = hospitalisations[h];
@@ -192,17 +169,17 @@ function displayHospByPatientData(){
 		}
 		if(tabHosp.length > 0){
 			// On rempli et on  affiche le tableau
-			fillTableauFull(tabHosp, MSG_LISTE_HOSPITALISATION);
-			displayTableau();
-			fillStatus(MSG_NBSP);
+			fillTableau("tableauData", tabHosp, MSG_LISTE_HOSPITALISATION);
+			displayElement("zoneTableau");
+			fillElement("statusInfo", MSG_NBSP);
 		}else{
-			fillStatus(MSG_NO_HOSPITALISATION);
-			hideTableau();		
+			fillElement("statusInfo", MSG_NO_HOSPITALISATION);
+			hideElement("zoneTableau");
 		}
 	}
 	// Sinon on cache le tableau
 	else{
-		hideTableau();
+		hideElement("zoneTableau");
 	}
 }
 
@@ -211,8 +188,7 @@ function displayHospEtablissement(){
 	initContent(false);
 
 	// On fait apparaitre le block traité
-	var choixEtablissement = document.getElementById("choixEtablissement");
-	choixEtablissement.style.display='block';
+	displayElement("choixEtablissement");
 
 	// 	Remplissage du Select	
 	var selectEtablissement = document.getElementById("selectEtablissement");
@@ -225,64 +201,79 @@ function displayHospEtablissement(){
 
 function displayHospSpecialite(){
 
-	// On fait apparaitre le block traité
-	var choixSpecialite = document.getElementById("choixSpecialite");
-	choixSpecialite.style.display='block';
+	// Établissement choisi
+	var selectEtablissement = document.getElementById("selectEtablissement");
+	var position = selectEtablissement.selectedIndex-1;
+	if(position >= 0){
+		var codeEtablissement = etablissements[position].code_etablissement;
 
-	// On crée le tableau des spécilité
-	var tabSpe = [];
-	var tabSpeUnique = [];
-	for(var s in hospitalisations){
-		tabSpe[s] = hospitalisations[s].specialite;
+		// On fait apparaitre le block traité
+		displayElement("choixSpecialite");
+
+		// On crée le tableau des spécilité
+		var tabSpe = [];
+		var tabSpeUnique = [];
+		for(var s in hospitalisations){
+			if(hospitalisations[s].code_etablissement == codeEtablissement){
+				tabSpe[s] = hospitalisations[s].specialite;
+			}
+		}
+		// Ne garde que les valeurs uniques ; Source : https://stackoverflow.com/questions/9229645/remove-duplicate-values-from-js-array
+		tabSpeUnique = tabSpe.filter(function(item, pos) {
+			return tabSpe.indexOf(item) == pos;
+		})
+
+		// 	Remplissage du Select	
+		var selectSpecialite = document.getElementById("selectSpecialite");
+		selectSpecialite.options.length = 0;
+		selectSpecialite.options[0] = new Option(MSG_CHOISIR);
+		for(var s in tabSpeUnique){
+			selectSpecialite.options[selectSpecialite.options.length] = new Option(tabSpeUnique[s]);
+		}
+	}else{
+		// On cache le Select des spécialités
+		hideElement("choixSpecialite");
 	}
-	// Source : https://stackoverflow.com/questions/9229645/remove-duplicate-values-from-js-array
-	tabSpeUnique = tabSpe.filter(function(item, pos) {
-		return tabSpe.indexOf(item) == pos;
-	})
-
-	// 	Remplissage du Select	
-	var selectSpecialite = document.getElementById("selectSpecialite");
-	selectSpecialite.options.length = 0;
-	selectSpecialite.options[0] = new Option(MSG_CHOISIR);
-	for(var s in tabSpeUnique){
-		selectSpecialite.options[selectSpecialite.options.length] = new Option(tabSpeUnique[s]);
-	}	
 }
 
 function displayHospEtabSpeData(){	
-	var selectPatient = document.getElementById("selectPatient");
-	var selected = selectPatient.selectedIndex -1;	// Élement choisi
-	// Si on a choisi un patient
-	if(selected >= 0){
-		var dossier = patients[selectPatient.selectedIndex-1].dossier;		
-		var tabHosp = [];
-		var pos = 0;
-		// Récupération des hospitalisation du patient
-		for(var h in hospitalisations){
-			if(hospitalisations[h].dossier === dossier){
-				tabHosp[pos++] = hospitalisations[h];
-			}
-		}
-		if(tabHosp.length > 0){
-			// On rempli et on affiche le tableau
-			fillTableauFull(tabHosp);
-			displayTableau();
-			fillStatus(MSG_NBSP);
-		}else{
-			fillStatus(MSG_NO_HOSPITALISATION);
-			hideTableau();
+	// On cache tout le bazard	
+	initContent(false);
+
+	// Spécialité choisie
+	var selectSpecialite = document.getElementById("selectSpecialite");
+	var specialiteChoisi = selectSpecialite.options[selectSpecialite.selectedIndex].text;	// Élement choisi
+
+	// Établissement choisi
+	var selectEtablissement = document.getElementById("selectEtablissement");
+	var infoEtablissement = etablissements[selectEtablissement.selectedIndex-1];
+
+	var tabInfoEtablissement = [infoEtablissement];
+	var tabActParSpe = [];
+	var pos = 0;
+
+	// Affichage des informations sur l'établissement
+	fillTableau("tableauPresentation", tabInfoEtablissement, MSG_INFO_ETABLISSEMENT);
+
+	// Récupération des actes de l'établissement pour la spécialité choisie
+	for(var h in hospitalisations){
+		if(hospitalisations[h].code_etablissement == infoEtablissement.code_etablissement
+			&& hospitalisations[h].specialite == specialiteChoisi){
+				tabActParSpe[pos++] = hospitalisations[h];
 		}
 	}
-	// Sinon on cache le tableau
-	else{
-		hideTableau();
-	}
+
+	// On rempli et on  affiche le tableau
+	fillTableau("tableauData", tabActParSpe, MSG_LISTE_ACTS_PAR_SPECIALITE);
+	displayElement("zoneTableau");
+	fillElement("statusInfo", MSG_NBSP);		
+
 }
 
 
 
 // Permet de mettre en évidence le bouton du menu sur lequel on a cliqué
-function setSelected(current){	
+function setMenuSelected(current){	
 	var menu = document.getElementById("menu").childNodes;
 	// On ôte la classe "selected" de tous les éléments de la liste et on l'applique à celle sélectionnée
 	for(var v in menu){

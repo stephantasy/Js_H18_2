@@ -39,11 +39,11 @@
       <!-- BARRE DE MENU -->
       <div id="menubar">
         <ul id="menu">
-          <li onclick="displayPatients(); setSelected(this);"><a href="#">Patients</a></li>
-          <li onclick="displayEtablissements(); setSelected(this);"><a href="#">Établissements</a></li>
-          <li onclick="displayHospitalisations(); setSelected(this);"><a href="#">Hospitalisations</a></li>
-          <li onclick="displayHospByPatient(); setSelected(this);"><a href="#">Hospitalisations<br/>par patient</a></li>
-          <li onclick="displayHospEtablissement(); setSelected(this);"><a href="#">Hospitalisations<br/>par établissement<br/>et par spécialité</a></li>
+          <li onclick="displayPatients(); setMenuSelected(this);"><a href="#">Patients</a></li>
+          <li onclick="displayEtablissements(); setMenuSelected(this);"><a href="#">Établissements</a></li>
+          <li onclick="displayHospitalisations(); setMenuSelected(this);"><a href="#">Hospitalisations</a></li>
+          <li onclick="displayHospByPatient(); setMenuSelected(this);"><a href="#">Hospitalisations<br/>par patient</a></li>
+          <li onclick="displayHospEtablissement(); setMenuSelected(this);"><a href="#">Hospitalisations<br/>par établissement<br/>et par spécialité</a></li>
         </ul>
       </div>
     </div>
@@ -78,10 +78,10 @@
       <!-- Tableau -->
       <div id="zoneTableau" class="invisible">
         <img id="imageCroix" src="style/imageCroix.png" alt="imageCroix" height="20px" width="20px" onclick="initContent(true);" /><br/>
-        <span id="infoTableauSimple" class="invisible"></span>
-        <div id="tableauDataSimple"></div>
-        <span id="infoTableauFull" class="invisible"></span>
-        <div id="tableauDataFull"></div>
+        <span id="tableauPresentationInfo" class="invisible"></span>
+        <div id="tableauPresentation"></div>
+        <span id="tableauDataInfo" class="invisible"></span>
+        <div id="tableauData"></div>
       </div>
 
     </div>
