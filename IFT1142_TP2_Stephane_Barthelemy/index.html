@@ -42,8 +42,8 @@
           <li onclick="displayPatients(); setSelected(this);"><a href="#">Patients</a></li>
           <li onclick="displayEtablissements(); setSelected(this);"><a href="#">Établissements</a></li>
           <li onclick="displayHospitalisations(); setSelected(this);"><a href="#">Hospitalisations</a></li>
-          <li onclick="displayHospPatient(); setSelected(this);"><a href="#">Hospitalisations<br/>par patient</a></li>
-          <li onclick="setSelected(this);"><a href="#">Hospitalisations<br/>par établissement<br/>et par spécialité</a></li>
+          <li onclick="displayHospByPatient(); setSelected(this);"><a href="#">Hospitalisations<br/>par patient</a></li>
+          <li onclick="displayHospEtablissement(); setSelected(this);"><a href="#">Hospitalisations<br/>par établissement<br/>et par spécialité</a></li>
         </ul>
       </div>
     </div>
@@ -51,20 +51,38 @@
     <!-- CONTENU -->
     <div id="siteContent">
 
-      <!-- Select 1 -->
+      <div id="defaultPresentation">
+        <h1>PAGE DE PRÉSENTATION !</h1>
+      </div>
+
+      <!-- Select Patient -->
       <div id="choixPatient"  class="invisible">
         Veuillez coisir le code du patient<br/>
-        <select id="selectPatient" onchange="displayHospPatientData();"></select>
+        <select id="selectPatient" onchange="displayHospByPatientData();"></select>
+      </div>
+
+      <!-- Select Établissement -->
+      <div id="choixEtablissement"  class="invisible">
+        Veuillez coisir l'établissement<br/>
+        <select id="selectEtablissement" onchange="displayHospSpecialite();"></select>
+        <button type="button" onclick="initContent(true);">Fermer</button> 
+      </div>
+
+      <!-- Select Spécialité -->
+      <div id="choixSpecialite"  class="invisible">
+        Veuillez coisir la spécialité<br/>
+        <span id="noteSpecialite">(Note : Seules les spécialités présentes dans nos dossiers pour cet établissement apparaissent dans la liste)</span><br/>
+        <select id="selectSpecialite" onchange="displayHospEtabSpeData();"></select>
       </div>
 
       <!-- Tableau -->
-      <div id="tableauData">
+      <div id="zoneTableau" class="invisible">
+        <img id="imageCroix" src="style/imageCroix.png" alt="imageCroix" height="20px" width="20px" onclick="initContent(true);" /><br/>
+        <span id="infoTableauSimple" class="invisible"></span>
+        <div id="tableauDataSimple"></div>
+        <span id="infoTableauFull" class="invisible"></span>
+        <div id="tableauDataFull"></div>
       </div>
-
-      <!-- Select 2 -->
-      <div id="choixSecond"  class="invisible">
-          <select id="selectSecond"></select>
-        </div>
 
     </div>
 

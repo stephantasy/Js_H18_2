@@ -41,53 +41,215 @@ var hospitalisations = [
 	{ "code_etablissement":7306, "dossier":2, "date_admission":"1998-05-23", "date_sortie":"1998-05-27", "specialite":"Orthopédie" }
 ]	
 
+// Constantes (textes)
+const MSG_NBSP = "&nbsp;";
+const MSG_CHOISIR = "Choisir...";
+const MSG_LISTE_HOSPITALISATION = "Liste des hospitalisations";
+const MSG_LISTE_PATIENTS = "Liste des patients";
+const MSG_LISTE_ETABLISSEMENT = "Liste des établissements";
+const MSG_NO_HOSPITALISATION = "Aucune hospitalisation pour ce patient";
+const MSG_INFO_PATIENT = "Information sur le patient";
 
-function initContent(){	
+// Initialisation 
+function initContent(displayPresentation){
+	// On cache les zones de Select	et de tableau
 	var choixPatient = document.getElementById("choixPatient");
 	choixPatient.style.display='none'; 	
-	var choixSecond = document.getElementById("choixSecond");
-	choixSecond.style.display='none';	
-	var tableauData = document.getElementById("tableauData");
-	tableauData.style.display='none';	
+	var choixEtablissement = document.getElementById("choixEtablissement");
+	choixEtablissement.style.display='none';
+	var choixSpecialite = document.getElementById("choixSpecialite");
+	choixSpecialite.style.display='none';	
+	var zoneTableau = document.getElementById("zoneTableau");
+	zoneTableau.style.display='none';
+	// On vide les tableaux
+	cleanTableauSimple();
+	cleanTableauFull();
+	// On vide les champs d'informations/Status
+	var infoTableauSimple = document.getElementById("infoTableauSimple");
+	infoTableauSimple.innerText = "";
+	infoTableauSimple.style.display = 'none';
+	var infoTableauFull = document.getElementById("infoTableauFull");
+	infoTableauFull.innerText = "";
+	infoTableauFull.style.display = 'none';
+	fillStatus(MSG_NBSP);
+	if(displayPresentation){
+		// On affiche la présentation par défaut
+		var defaultPresentation = document.getElementById("defaultPresentation");
+		defaultPresentation.style.display='block';
+	}else{
+		// On cache la présentation par défaut
+		var defaultPresentation = document.getElementById("defaultPresentation");
+		defaultPresentation.style.display='none';
+	}
 }
 
-function displayTableau(tableau){		
-	var tableauData = document.getElementById("tableauData");
-	tableauData.style.display='block'; 	
-	tableauData.innerHTML = "";
-	tableauData.appendChild(getTableau(tableau));
+
+// On affiche la présentation par défaut
+function displayDefaultPresentation(){
+	var defaultPresentation = document.getElementById("defaultPresentation");
+	defaultPresentation.style.display='block';
+}
+
+function displayTableau(){		
+	var zoneTableau = document.getElementById("zoneTableau");
+	zoneTableau.style.display='block'; 	
+}
+function hideTableau(){		
+	var zoneTableau = document.getElementById("zoneTableau");
+	zoneTableau.style.display='none'; 	
+}
+function cleanTableauSimple(){
+	var tableauDataSimple = document.getElementById("tableauDataSimple");
+	tableauDataSimple.innerHTML = "";
+}
+function cleanTableauFull(){
+	var tableauDataFull = document.getElementById("tableauDataFull");
+	tableauDataFull.innerHTML = "";
+}
+
+function fillTableauSimple(tableau, message){
+	cleanTableauSimple();
+	if(message){
+		var infoTableauSimple = document.getElementById("infoTableauSimple");
+		infoTableauSimple.innerText = message;
+		infoTableauSimple.style.display = 'block';
+	}
+	tableauDataSimple.appendChild(getTableau(tableau, true));
+}
+
+function fillTableauFull(tableau, message){
+	cleanTableauFull();
+	if(message){
+		var infoTableauFull = document.getElementById("infoTableauFull");
+		infoTableauFull.innerText = message;
+		infoTableauFull.style.display = 'block';
+	}
+	tableauDataFull.appendChild(getTableau(tableau, true));
+}
+
+function fillStatus(msg){	
+	statusInfo = document.getElementById("statusInfo");
+	statusInfo.innerHTML = msg;
 }
 
 function displayPatients(){	
-	initContent();
-    displayTableau(patients);
+	initContent(false);
+	fillTableauFull(patients, MSG_LISTE_PATIENTS);
+	displayTableau();
 }
 
 function displayEtablissements(){
-	initContent();
-	displayTableau(etablissements);
+	initContent(false);
+	fillTableauFull(etablissements, MSG_LISTE_ETABLISSEMENT);
+	displayTableau();
 }
 
 function displayHospitalisations(){
-	initContent();
-	displayTableau(hospitalisations);
+	initContent(false);
+	fillTableauFull(hospitalisations, MSG_LISTE_HOSPITALISATION);
+	displayTableau();
 }
 
-function displayHospPatient(){
-	initContent();
+function displayHospByPatient(){
+	initContent(false);
 	// On fait apparaitre le block traité
 	var choixPremier = document.getElementById("choixPatient");
 	choixPremier.style.display='block';
 	// 	Remplissage du Select	
 	var selectPatient = document.getElementById("selectPatient");
 	selectPatient.options.length = 0;
-	selectPatient.options[0] = new Option("Choisir...");
+	selectPatient.options[0] = new Option(MSG_CHOISIR);
 	for(var p in patients){
 		selectPatient.options[selectPatient.options.length] = new Option(patients[p].dossier + " (" + patients[p].nom + " " + patients[p].prenom + ")");
 	}	
 }
 
-function displayHospPatientData(){	
+function displayHospByPatientData(){	
+	// On cache le select	
+	var choixPatient = document.getElementById("choixPatient");
+	choixPatient.style.display='none';
+
+	// On affiche les tableaux
+	var selectPatient = document.getElementById("selectPatient");
+	var selected = selectPatient.selectedIndex -1;	// Élement choisi
+	
+	// Si on a choisi un patient
+	if(selected >= 0){
+		var infoPatient = patients[selectPatient.selectedIndex-1];
+		var tabHosp = [];
+		var pos = 0;
+		var tabInfoPatient = [infoPatient];
+
+		// Affichage des informations sur le patient
+		fillTableauSimple(tabInfoPatient, MSG_INFO_PATIENT);
+
+		// Récupération des hospitalisation du patient
+		pos = 0;
+		for(var h in hospitalisations){
+			if(hospitalisations[h].dossier === infoPatient.dossier){
+				tabHosp[pos++] = hospitalisations[h];
+			}
+		}
+		if(tabHosp.length > 0){
+			// On rempli et on  affiche le tableau
+			fillTableauFull(tabHosp, MSG_LISTE_HOSPITALISATION);
+			displayTableau();
+			fillStatus(MSG_NBSP);
+		}else{
+			fillStatus(MSG_NO_HOSPITALISATION);
+			hideTableau();		
+		}
+	}
+	// Sinon on cache le tableau
+	else{
+		hideTableau();
+	}
+}
+
+
+function displayHospEtablissement(){
+	initContent(false);
+
+	// On fait apparaitre le block traité
+	var choixEtablissement = document.getElementById("choixEtablissement");
+	choixEtablissement.style.display='block';
+
+	// 	Remplissage du Select	
+	var selectEtablissement = document.getElementById("selectEtablissement");
+	selectEtablissement.options.length = 0;
+	selectEtablissement.options[0] = new Option(MSG_CHOISIR);
+	for(var p in etablissements){
+		selectEtablissement.options[selectEtablissement.options.length] = new Option(etablissements[p].code_etablissement + " (" + etablissements[p].nom + ")");
+	}
+}
+
+function displayHospSpecialite(){
+
+	// On fait apparaitre le block traité
+	var choixSpecialite = document.getElementById("choixSpecialite");
+	choixSpecialite.style.display='block';
+
+	// On crée le tableau des spécilité
+	var tabSpe = [];
+	var tabSpeUnique = [];
+	for(var s in hospitalisations){
+		tabSpe[s] = hospitalisations[s].specialite;
+	}
+	// Source : https://stackoverflow.com/questions/9229645/remove-duplicate-values-from-js-array
+	tabSpeUnique = tabSpe.filter(function(item, pos) {
+		return tabSpe.indexOf(item) == pos;
+	})
+
+	// 	Remplissage du Select	
+	var selectSpecialite = document.getElementById("selectSpecialite");
+	selectSpecialite.options.length = 0;
+	selectSpecialite.options[0] = new Option(MSG_CHOISIR);
+	for(var s in tabSpeUnique){
+		selectSpecialite.options[selectSpecialite.options.length] = new Option(tabSpeUnique[s]);
+	}	
+}
+
+function displayHospEtabSpeData(){	
 	var selectPatient = document.getElementById("selectPatient");
 	var selected = selectPatient.selectedIndex -1;	// Élement choisi
 	// Si on a choisi un patient
@@ -102,27 +264,27 @@ function displayHospPatientData(){
 			}
 		}
 		if(tabHosp.length > 0){
-			// On affiche le tableau
-			displayTableau(tabHosp);
-			statusInfo = document.getElementById("statusInfo");
-			statusInfo.innerHTML = "&nbsp;"
+			// On rempli et on affiche le tableau
+			fillTableauFull(tabHosp);
+			displayTableau();
+			fillStatus(MSG_NBSP);
 		}else{
-			statusInfo = document.getElementById("statusInfo");
-			statusInfo.innerHTML = "Aucune hospitalisation pour ce patient."
-			var tableauData = document.getElementById("tableauData");
-			tableauData.style.display='none';		
+			fillStatus(MSG_NO_HOSPITALISATION);
+			hideTableau();
 		}
 	}
 	// Sinon on cache le tableau
 	else{
-		var tableauData = document.getElementById("tableauData");
-		tableauData.style.display='none';
+		hideTableau();
 	}
 }
 
-// On ôte la class "selected" de tous les éléments de la liste et on l'applique à celle sélectionnée
-function setSelected(current){
+
+
+// Permet de mettre en évidence le bouton du menu sur lequel on a cliqué
+function setSelected(current){	
 	var menu = document.getElementById("menu").childNodes;
+	// On ôte la classe "selected" de tous les éléments de la liste et on l'applique à celle sélectionnée
 	for(var v in menu){
 		if(menu[v].nodeName === "LI"){
 			menu[v].setAttribute("class","");
@@ -131,27 +293,31 @@ function setSelected(current){
 	current.setAttribute("class","selected");
 }
 
+
 // Construction de la Table avec les données reçues en paramètre
-function getTableau(tab){
+function getTableau(tab, hasHeader){
 
 	var nbElement = tab.length;
 	var table = document.createElement("table");
 	table.setAttribute("id", "tableData");	
 	var tableHeader = document.createElement("thead");
 	var tableBody = document.createElement("tbody");
-	
+	var row;
+
 	//Get the count of columns.
 	var columnCount = 0;
 	for(var o in tab[0]){
 		columnCount++;
 	}
 
-	//Add the header row.
-	var row = tableHeader.insertRow(-1);
-	for (var p in tab[0]) {
-		var headerCell = document.createElement("th");
-		headerCell.innerHTML = p;
-		row.appendChild(headerCell);
+	if(hasHeader){
+		//Add the header row.
+		row = tableHeader.insertRow(-1);
+		for (var p in tab[0]) {
+			var headerCell = document.createElement("th");
+			headerCell.innerHTML = getNeatNameOf(p);
+			row.appendChild(headerCell);
+		}
 	}
 
 	//Add the data rows.
@@ -169,5 +335,43 @@ function getTableau(tab){
 	return table;
 }
 
+// Permet de modifier le nom d'une colonne issue de JSON en un nom plus "propre"
+function getNeatNameOf(name){
+	switch(name){
+		case "nom":
+		case "sexe":
+		case "adresse":
+			return name.charAt(0).toUpperCase() + name.slice(1);
+		case "prenom":
+			return "Prénom";		
+		case "specialite":
+			return "Spécialité";
+		case "dossier":
+			return "No de dossier";
+		case "date_naissance":
+			return "Date de naissance";
+		case "code_etablissement":
+			return "Code de l'établissement";
+		case "code_postal":
+			return "Code postal";
+		case "no_tel":
+			return "Téléphone";	
+		case "date_admission":
+			return "Date d'émission" ;
+		case "date_sortie":
+			return "Date de sortie";
+		default:
+			return name;
+	}
+}
 
+// Formate le numéro de téléphone
+function formatPhoneNumber(number){
+	return "(" + number.substr(0, 3) + ") " + number.substr(3, 3) + "-" + number.slice(6);
+}
+
+// Formate la date de naissance
+function formatBirthDate(birthDate){
+	return birthDate; //TODO
+}
 
