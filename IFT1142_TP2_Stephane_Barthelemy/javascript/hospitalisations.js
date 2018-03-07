@@ -38,7 +38,13 @@ var hospitalisations = [
 	{ "code_etablissement":3980, "dossier":10, "date_admission":"1997-04-28", "date_sortie":"1997-05-05", "specialite":"Chirurgie" },
 	{ "code_etablissement":4177, "dossier":3, "date_admission":"2001-08-03", "date_sortie":"2001-12-05", "specialite":"Médecine" },
 	{ "code_etablissement":4177, "dossier":3, "date_admission":"2002-02-02", "date_sortie":"2002-02-23", "specialite":"Orthopédie" },
-	{ "code_etablissement":7306, "dossier":2, "date_admission":"1998-05-23", "date_sortie":"1998-05-27", "specialite":"Orthopédie" }
+	{ "code_etablissement":7306, "dossier":2, "date_admission":"1998-05-23", "date_sortie":"1998-05-27", "specialite":"Orthopédie" },
+	{ "code_etablissement":2346, "dossier":3, "date_admission":"1995-04-12", "date_sortie":"1995-04-30", "specialite":"Médecine" },
+	{ "code_etablissement":3980, "dossier":5, "date_admission":"2000-02-14", "date_sortie":"2000-03-14", "specialite":"Médecine" },
+	{ "code_etablissement":3980, "dossier":5, "date_admission":"2001-01-01", "date_sortie":"2001-02-01", "specialite":"Médecine" },
+	{ "code_etablissement":3980, "dossier":9, "date_admission":"1995-04-03", "date_sortie":"1995-04-08", "specialite":"Orthopédie" },
+	{ "code_etablissement":3980, "dossier":7, "date_admission":"1999-11-27", "date_sortie":"1999-12-04", "specialite":"Chirurgie" },
+	{ "code_etablissement":3980, "dossier":10, "date_admission":"1997-04-28", "date_sortie":"1997-05-05", "specialite":"Chirurgie" }
 ]	
 
 // Constantes (textes)
@@ -71,6 +77,8 @@ function initContent(displayPresentation){
 	if(displayPresentation){
 		// On affiche la présentation par défaut
 		displayElement("defaultPresentation");
+		// On déselectionne le menu actif
+		setMenuSelected(null);
 	}else{
 		// On cache la présentation par défaut
 		hideElement("defaultPresentation");
@@ -143,9 +151,7 @@ function displayHospByPatient(){
 	}	
 }
 
-function displayHospByPatientData(){	
-	// On cache le select	
-	hideElement("choixPatient");
+function displayHospByPatientData(){
 
 	// Patient choisi
 	var selectPatient = document.getElementById("selectPatient");
@@ -167,7 +173,9 @@ function displayHospByPatientData(){
 				tabHosp[pos++] = hospitalisations[h];
 			}
 		}
-		if(tabHosp.length > 0){
+		if(tabHosp.length > 0){	
+			// On cache le select	
+			hideElement("choixPatient");
 			// On rempli et on  affiche le tableau
 			fillTableau("tableauData", tabHosp, MSG_LISTE_HOSPITALISATION);
 			displayElement("zoneTableau");
@@ -281,7 +289,10 @@ function setMenuSelected(current){
 			menu[v].setAttribute("class","");
 		}
 	}
-	current.setAttribute("class","selected");
+	if(current != undefined){
+		current.setAttribute("class","selected");
+	}
+	//$('#zoneTableau').scrollLeft(0);	//Pour remettre la Scrollbar en haut, mais je ne sais pas encore comment utiliser jquery... :(
 }
 
 

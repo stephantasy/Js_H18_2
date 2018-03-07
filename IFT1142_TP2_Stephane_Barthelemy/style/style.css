@@ -65,12 +65,6 @@ ul li
   margin: 0 0 6px 0; 
   padding: 0 0 4px 5px;}
 
-ol
-{ margin: 8px 0 22px 20px;}
-
-ol li
-{ margin: 0 0 11px 0;}
-
 .left
 { float: left;
   width: auto;
@@ -128,8 +122,8 @@ ol li
 
 #logo #contact_details
 { position: absolute; 
-  top: 60px;
-  right: 65px;}
+  top: 50px;
+  right: 50px;}
 
 #logo #contact_details p
 { text-align: center;
@@ -139,7 +133,7 @@ ol li
   color: #999;}
 
 #menubar
-{ width: 875px;
+{ width: 876px;
   height: 71px;
   padding: 0px 0 0 0px;
   border: 1px solid #6A6A6A;
@@ -163,7 +157,7 @@ ul#menu li a
   display: block; 
   float: left; 
   height: 38px;
-  padding: 28px 22px 4px 22px;
+  padding: 15px 20px;
   text-align: center;
   color: #CDC090;
   text-transform: uppercase;
@@ -172,41 +166,27 @@ ul#menu li a
   background: transparent;} 
 
 ul#menu li a:hover, ul#menu li.selected a, ul#menu li.selected a:hover
-{ color: #FFF;}
+{ color: #FFF;
+  background: #555 url(menu_select.png) repeat-x;}
 
 #siteContent
 { width: 845px;
-  height: 500px;
+  height: 450px;
   overflow: hidden;
   margin: 0 auto 0 auto;
   padding: 25px 20px 20px 33px;
   background: #FFF url(content.png) repeat-y;} 
 
-#content
-{ text-align: left;
-  
-  padding: 0;}
-
-#content ul
-{ margin: 2px 0 22px 0px;}
-
-#content ul li
-{ list-style-type: none;
-  background: url(bullet.png) no-repeat;
-  margin: 0 0 6px 0; 
-  padding: 0 0 4px 25px;
-  line-height: 1.5em;}
-
 #footer
 { width: 878px;
   font: normal 100% "lucida sans unicode";
-  height: 33px;
-  padding: 24px 0 5px 0;
+  height: 20px;
+  padding: 8px 0 5px 0;
   text-align: center; 
   background: #555 url(menu.png) repeat-x;
   color: #CDC090;
   text-transform: uppercase;
-  letter-spacing: 0.1em;}
+  }
 
 #footer a
 { color: #FFF;
@@ -273,15 +253,28 @@ ul#menu li a:hover, ul#menu li.selected a, ul#menu li.selected a:hover
 }
 
 table
-{ margin: 10px 0 30px 0;}
+{ margin: 10px 0px 30px 0px;}
 
 table tr th, table tr td
-{ background: #3B3B3B;
-  color: #FFF;
-  padding: 7px 4px;
+{ background: #3B3B3B;  /*Couleur de fond de l'entête*/
+  color: #FFF;          /*Couleur du texte de l'entête*/
+  padding: 7px 10px;
   text-align: left;}
   
 table tr td
-{ background: #F4F4EE;
-  color: #47433F;
-  border-top: 1px solid #FFF;}
+{ background: #F4F4EE;          /*Fond cellules données*/
+  color: #47433F;               /*Texte des données*/
+  border-top: 1px solid #FFF;}  /*Séparations horizontales*/
+
+/*Une cellule sur 2 plus foncée*/
+tr:nth-child(even) td {
+  background: #C4C4BE;
+}
+
+/* On ajoute une scrollbar à la zone pour les tableaux trop grand */
+#zoneTableau { 
+  float:left;
+  width:100%;
+  overflow-y: auto;
+  height: 450px;
+}
