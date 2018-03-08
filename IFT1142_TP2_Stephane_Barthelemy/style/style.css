@@ -298,7 +298,6 @@ table tr td
 { background: #F4F4EE;          /*Fond cellules données*/
   color: #47433F;               /*Texte des données*/
 }
-
 /*Une cellule sur 2 plus foncée*/
 tr:nth-child(even) td {
   background: #C4C4BE;
