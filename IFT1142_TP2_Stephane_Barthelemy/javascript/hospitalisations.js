@@ -13,7 +13,7 @@ var patients = [
 	{ "dossier":8, "nom":"St-Jean", "prenom":"Arthur", "date_naissance":"1912-10-07", "sexe":"M" },
 	{ "dossier":9, "nom":"Béchard", "prenom":"Marc", "date_naissance":"1980-08-08", "sexe":"M" },
 	{ "dossier":10, "nom":"Chartrand", "prenom":"Mario", "date_naissance":"1947-07-23", "sexe":"M" },
-]	
+];
 
 // Note : Le numéro de téléphone est une String, car dans certains pays il commence part un 0
 var etablissements = [	
@@ -23,7 +23,7 @@ var etablissements = [
 	{ "code_etablissement":4177, "nom":"Centre hospitalier Est", "adresse":"12 rue Bernard, Repentigny, Qc", "code_postal":"J8R3K5", "no_tel":"4505892345" },
 	{ "code_etablissement":7306, "nom":"Hôpital  du Salut", "adresse":"11 rue de la Rédemption, St-Basile, Qc", "code_postal":"J8H2D4", "no_tel":"4503456789" },
 	{ "code_etablissement":8895, "nom":"Dernier Recours", "adresse":"999 rue St-Pierre, Longueuil, Qc", "code_postal":"J7B3J5", "no_tel":"4505556741" },
-]	
+];
 	
 var hospitalisations = [	
 	{ "code_etablissement":1234, "dossier":5, "date_admission":"2000-08-14", "date_sortie":"2001-08-14", "specialite":"Médecine" },
@@ -39,7 +39,7 @@ var hospitalisations = [
 	{ "code_etablissement":4177, "dossier":3, "date_admission":"2001-08-03", "date_sortie":"2001-12-05", "specialite":"Médecine" },
 	{ "code_etablissement":4177, "dossier":3, "date_admission":"2002-02-02", "date_sortie":"2002-02-23", "specialite":"Orthopédie" },
 	{ "code_etablissement":7306, "dossier":2, "date_admission":"1998-05-23", "date_sortie":"1998-05-27", "specialite":"Orthopédie" }
-]	
+];
 
 // Constantes (textes)
 const MSG_NBSP = "&nbsp;";
@@ -88,13 +88,13 @@ function initContent(displayPresentation){
 // Cache l'élément demandé
 function hideElement(name){	
 	var element = document.getElementById(name);
-	element.style.display='none';
+	element.style.display="none";
 }
 
 // Affiche l'élément demandé
 function displayElement(name){	
 	var element = document.getElementById(name);
-	element.style.display='block';
+	element.style.display="block";
 }
 
 // Rempli l'élément demandé avec le message passé en paramètre
@@ -244,15 +244,15 @@ function displayHospSpecialite(){
 		// On crée le tableau des spécilité
 		var tabSpe = [];
 		var tabSpeUnique = [];
-		for(var s in hospitalisations){
-			if(hospitalisations[s].code_etablissement == codeEtablissement){
-				tabSpe[s] = hospitalisations[s].specialite;
+		for(var h in hospitalisations){
+			if(hospitalisations[h].code_etablissement == codeEtablissement){
+				tabSpe[h] = hospitalisations[h].specialite;
 			}
 		}
 		// Ne garde que les valeurs uniques ; Source : https://stackoverflow.com/questions/9229645/remove-duplicate-values-from-js-array
 		tabSpeUnique = tabSpe.filter(function(item, pos) {
 			return tabSpe.indexOf(item) == pos;
-		})
+		});
 
 		// 	Remplissage du Select	
 		var atLeastOne = false;
@@ -294,8 +294,7 @@ function displayHospEtabSpeData(){
 
 	// Récupération des actes de l'établissement pour la spécialité choisie
 	for(var h in hospitalisations){
-		if(hospitalisations[h].code_etablissement == infoEtablissement.code_etablissement
-			&& hospitalisations[h].specialite == specialiteChoisi){
+		if(hospitalisations[h].code_etablissement == infoEtablissement.code_etablissement && hospitalisations[h].specialite == specialiteChoisi){
 				tabActParSpe[pos++] = hospitalisations[h];
 		}
 	}
@@ -322,7 +321,7 @@ function setMenuSelected(current){
 			menu[v].setAttribute("class","");
 		}
 	}
-	if(current != undefined){
+	if(current !== null){
 		current.setAttribute("class","selected");
 	}
 	//$('#zoneTableau').scrollLeft(0);	//Pour remettre la Scrollbar en haut, mais je ne sais pas encore comment utiliser jquery... :(
@@ -339,18 +338,12 @@ function getFilledTableau(tab, hasHeader){
 	var tableBody = document.createElement("tbody");
 	var row;
 
-	//Get the count of columns.
-	var columnCount = 0;
-	for(var o in tab[0]){
-		columnCount++;
-	}
-
 	if(hasHeader){
 		//Add the header row.
 		row = tableHeader.insertRow(-1);
-		for (var p in tab[0]) {
+		for (var h in tab[0]) {
 			var headerCell = document.createElement("th");
-			headerCell.innerHTML = getNeatNameOf(p);
+			headerCell.innerHTML = getNeatNameOf(h);
 			row.appendChild(headerCell);
 		}
 	}
@@ -358,12 +351,12 @@ function getFilledTableau(tab, hasHeader){
 	//Add the data rows.
 	for (var i = 0; i < nbElement; i++) {
 		row = tableBody.insertRow(-1);
-		for (var p in tab[i]) {
+		for (var r in tab[i]) {
 			var cell = row.insertCell(-1);
-			if(p == "no_tel"){
-				cell.innerHTML = formatPhoneNumber(tab[i][p]);
+			if(r == "no_tel"){
+				cell.innerHTML = formatPhoneNumber(tab[i][r]);
 			}else{
-				cell.innerHTML = tab[i][p];
+				cell.innerHTML = tab[i][r];
 			}
 		}
 	}
