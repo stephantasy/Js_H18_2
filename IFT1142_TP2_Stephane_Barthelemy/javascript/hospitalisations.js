@@ -417,6 +417,6 @@ function formatPhoneNumber(number){
 
 // Formate la date de naissance
 function formatBirthDate(birthDate){
-	return birthDate; //TODO
+	return birthDate; //Inutile, le format SI est très bien !
 }
 
