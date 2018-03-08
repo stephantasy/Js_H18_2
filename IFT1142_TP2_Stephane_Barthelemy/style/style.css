@@ -57,6 +57,7 @@ blockquote
   border: 1px solid #E5E5DB;
   background: #FFF;}
 
+/* Listes */
 ul
 { margin: 2px 0 22px 17px;}
 
@@ -65,22 +66,7 @@ ul li
   margin: 0 0 6px 0; 
   padding: 0 0 4px 5px;}
 
-.left
-{ float: left;
-  width: auto;
-  margin-right: 10px;}
-
-.right
-{ float: right; 
-  width: auto;
-  margin-left: 10px;}
-
-.center
-{ display: block;
-  text-align: center;
-  margin: 20px auto;}
-
-#main, #logo, #menubar, #siteContent, #footer
+#main, #logo, #menubar, #siteContent, #status, #footer
 { margin-left: auto; 
   margin-right: auto;}
 
@@ -171,11 +157,71 @@ ul#menu li a:hover, ul#menu li.selected a, ul#menu li.selected a:hover
 
 #siteContent
 { width: 845px;
-  height: 450px;
+  height: 460px;
   overflow: hidden;
   margin: 0 auto 0 auto;
   padding: 25px 20px 20px 33px;
-  background: #FFF url(content.png) repeat-y;} 
+  background: #FFF url(content.png) repeat-y;
+}
+
+#defaultPresentation{
+  font-size: 120%;
+}
+#defaultPresentation h1{
+  color: #777;
+  text-shadow: 1px 1px #CDC090;
+  font-size: 250%;
+  text-align: center;
+  padding: 30px 0px;
+}
+#defaultPresentation p
+{
+  text-decoration: underline;
+}
+#defaultPresentation ul li
+{ list-style-type: none;
+  background: url(bullet.png) no-repeat;
+  margin: 0 0 6px 0; 
+  padding: 0 0 4px 25px;
+  line-height: 1.5em;}
+#defaultPresentation ul li span
+{
+  font-weight: bold;
+  color: #555;
+}
+
+#status
+{  
+  height: 50px;
+  width: 845px;
+  padding: 0px 20px 0px 33px;
+  text-align: center;
+  color: #555;
+  background: #FFF url(status.png) repeat-y;
+}
+#status h4
+{    
+  font-size: 100%;
+  text-transform: uppercase;
+  background: #555 url(menu.png) repeat-x;
+  box-sizing:border-box;
+
+  /* Centré sur la ligne*/
+  position: absolute;
+  margin: -10px 0px 0px 390px;
+  
+  /* Fond rectangulaire arrondi*/
+  border-radius: 10px;
+  padding: 4px 0px 0px 0px;
+  width: 80px;
+  height: 25px;  
+}
+#status p
+{
+  padding-top: 20px;
+  font-weight: bold;
+}
+
 
 #footer
 { width: 878px;
@@ -187,88 +233,41 @@ ul#menu li a:hover, ul#menu li.selected a, ul#menu li.selected a:hover
   color: #CDC090;
   text-transform: uppercase;
   }
-
 #footer a
 { color: #FFF;
-  text-decoration: none;}
-
+  text-decoration: none;
+}
 #footer a:hover
 { color: #CDC090;
-  text-decoration: none;}
-
-.form_settings
-{ margin: 15px 0 0 0;}
-
-.form_settings p
-{ padding: 0 0 4px 0;}
-
-.form_settings span
-{ float: left; 
-  width: 200px; 
-  text-align: left;}
-  
-.form_settings input, .form_settings textarea
-{ padding: 5px; 
-  width: 299px; 
-  font: 100% arial; 
-  border: 1px solid #E5E5DB; 
-  background: #FFF; 
-  color: #47433F;}
-  
-.form_settings .submit
-{ font: 100% arial; 
-  border: 1px solid; 
-  width: 99px; 
-  margin: 0 0 0 212px; 
-  height: 33px;
-  padding: 2px 0 3px 0;
-  cursor: pointer; 
-  background: #3B3B3B; 
-  color: #FFF;}
-
-.form_settings textarea, .form_settings select
-{ font: 100% arial; 
-  width: 299px;}
-
-.form_settings select
-{ width: 310px;}
-
-.form_settings .checkbox
-{ margin: 4px 0; 
-  padding: 0; 
-  width: 14px;
-  border: 0;
-  background: none;}
-
-.separator
-{ width: 100%;
-  height: 0;
-  border-top: 1px solid #D9D5CF;
-  border-bottom: 1px solid #FFF;
-  margin: 0 0 20px 0;
+  text-decoration: none;
 }
- 
+
+
+.info{
+  font-weight: bold;
+  text-decoration: underline;
+  padding: 2px;
+}
+.note{
+  font-style: italic;
+  padding: 0px;
+}
+.select{
+  margin-bottom: 40px;
+}
+.button{  
+  color: #CDC090;
+  text-transform: uppercase;
+  background: #555 url(menu.png) repeat-x;
+  border-radius: 5px;
+  width: 80px;
+  height: 30px;  
+  margin-left: 50px;
+}
+
+/* Élements cachés par défaut*/
 .invisible{
-	display: none;
-}
-
-table
-{ margin: 10px 0px 30px 0px;}
-
-table tr th, table tr td
-{ background: #3B3B3B;  /*Couleur de fond de l'entête*/
-  color: #FFF;          /*Couleur du texte de l'entête*/
-  padding: 7px 10px;
-  text-align: left;}
-  
-table tr td
-{ background: #F4F4EE;          /*Fond cellules données*/
-  color: #47433F;               /*Texte des données*/
-  border-top: 1px solid #FFF;}  /*Séparations horizontales*/
-
-/*Une cellule sur 2 plus foncée*/
-tr:nth-child(even) td {
-  background: #C4C4BE;
+  display: none;
 }
 
 /* On ajoute une scrollbar à la zone pour les tableaux trop grand */
@@ -276,5 +275,31 @@ tr:nth-child(even) td {
   float:left;
   width:100%;
   overflow-y: auto;
-  height: 450px;
+  height: 460px;
+}
+
+/* TABLEAU */
+table
+{ margin: 10px 0px 30px 0px;
+  border-collapse: collapse;
+}
+table tr th, table tr td
+{ background: #3B3B3B;  /*Couleur de fond de l'entête*/
+  color: #FFF;          /*Couleur du texte de l'entête*/
+  padding: 7px 10px;
+  text-align: left;
+  border: 1px solid #FFF;
+}  
+table tr th
+{
+  text-align: center;
+}  
+table tr td
+{ background: #F4F4EE;          /*Fond cellules données*/
+  color: #47433F;               /*Texte des données*/
+}
+
+/*Une cellule sur 2 plus foncée*/
+tr:nth-child(even) td {
+  background: #C4C4BE;
 }

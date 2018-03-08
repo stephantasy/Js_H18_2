@@ -54,9 +54,16 @@ const MSG_LISTE_HOSPITALISATION = "Liste des hospitalisations";
 const MSG_LISTE_ACTS_PAR_SPECIALITE = "Liste des actes pour la spécialité choisie";
 const MSG_LISTE_PATIENTS = "Liste des patients";
 const MSG_LISTE_ETABLISSEMENT = "Liste des établissements";
-const MSG_NO_HOSPITALISATION = "Aucune hospitalisation pour ce patient";
+const MSG_NO_HOSPITALISATION_PATIENT = "Aucune hospitalisation pour ce patient";
+const MSG_NO_SPECIALITE = "Aucune spécialité pour cet établissement";
 const MSG_INFO_PATIENT = "Information sur le patient";
 const MSG_INFO_ETABLISSEMENT = "Information sur l'établissement";
+const MSG_INFO_NB_PATIENT = "Il y a {0} patient(s)";
+const MSG_INFO_NB_ETABLISSEMENT = "Il y a {0} établissement(s)";
+const MSG_INFO_NB_HOSPITALISATION = "Il y a {0} hospitalisation(s)";
+const MSG_INFO_NB_HOSPITALISATION_PATIENT = "Il y a {0} hospitalisation(s) pour {1}";
+const MSG_INFO_NB_HOSPITALISATION_ETAB_SPE = "Il y a {0} hospitalisation(s) en {1} pour l'établissement {2}";
+
 
 // Initialisation 
 function initContent(displayPresentation){
@@ -70,10 +77,9 @@ function initContent(displayPresentation){
 	hideElement("zoneTableau");
 	// On vide les champs de Status/Information
 	cleanElement("tableauPresentationInfo");
-	hideElement("tableauPresentationInfo");
 	cleanElement("tableauDataInfo");
 	hideElement("tableauDataInfo");
-	fillElement("statusInfo", MSG_NBSP);
+	fillElementText("statusInfo", MSG_NBSP);
 	if(displayPresentation){
 		// On affiche la présentation par défaut
 		displayElement("defaultPresentation");
@@ -98,7 +104,7 @@ function displayElement(name){
 }
 
 // Rempli l'élément demandé avec le message passé en paramètre
-function fillElement(name, msg){	
+function fillElementText(name, msg){	
 	var element = document.getElementById(name);
 	element.innerHTML = msg;
 }
@@ -114,30 +120,46 @@ function fillTableau(name, data, message){
 	cleanElement(name);
 	if(message){
 		displayElement(name + "Info");
-		fillElement(name + "Info", message);
+		fillElementText(name + "Info", message);
 	}
 	var tableau = document.getElementById(name);
-	tableau.appendChild(getTableau(data, true));
+	tableau.appendChild(getFilledTableau(data, true));
 }
 
+/* =================================================== */
+/* === PATIENTS / ÉTABLISSEMENTS / HOSPITALISATION === */
+/* =================================================== */
+
+// Affichage du tableau des patients
 function displayPatients(){	
 	initContent(false);
 	fillTableau("tableauData", patients, MSG_LISTE_PATIENTS);
-	displayElement("zoneTableau");
+	displayElement("zoneTableau");	
+	fillElementText("statusInfo", MSG_INFO_NB_PATIENT.replace("{0}", patients.length));
 }
 
+// Affichage du tableau des établissements
 function displayEtablissements(){
 	initContent(false);
 	fillTableau("tableauData", etablissements, MSG_LISTE_ETABLISSEMENT);
 	displayElement("zoneTableau");
+	fillElementText("statusInfo", MSG_INFO_NB_ETABLISSEMENT.replace("{0}", etablissements.length));
+
 }
 
+// Affichage du tableau des hospitalisations
 function displayHospitalisations(){
 	initContent(false);
 	fillTableau("tableauData", hospitalisations, MSG_LISTE_HOSPITALISATION);
 	displayElement("zoneTableau");
+	fillElementText("statusInfo", MSG_INFO_NB_HOSPITALISATION.replace("{0}", hospitalisations.length));
 }
 
+/* ==================================== */
+/* === HOSPITALISATION PAR PATIENTS === */
+/* ==================================== */
+
+// Affichage du SELECT pour choisir le patient
 function displayHospByPatient(){
 	initContent(false);
 	// On fait apparaitre le block traité
@@ -151,6 +173,7 @@ function displayHospByPatient(){
 	}	
 }
 
+// Affichage du résultat en fonction du patient choisi
 function displayHospByPatientData(){
 
 	// Patient choisi
@@ -178,10 +201,10 @@ function displayHospByPatientData(){
 			hideElement("choixPatient");
 			// On rempli et on  affiche le tableau
 			fillTableau("tableauData", tabHosp, MSG_LISTE_HOSPITALISATION);
-			displayElement("zoneTableau");
-			fillElement("statusInfo", MSG_NBSP);
+			displayElement("zoneTableau");			
+			fillElementText("statusInfo", MSG_INFO_NB_HOSPITALISATION_PATIENT.replace("{0}", tabHosp.length).replace("{1}", tabInfoPatient[0].prenom + " " + tabInfoPatient[0].nom));
 		}else{
-			fillElement("statusInfo", MSG_NO_HOSPITALISATION);
+			fillElementText("statusInfo", MSG_NO_HOSPITALISATION_PATIENT);
 			hideElement("zoneTableau");
 		}
 	}
@@ -192,6 +215,11 @@ function displayHospByPatientData(){
 }
 
 
+/* ============================================================= */
+/* === HOSPITALISATION PAR ÉTABLISSEMENTS ET PAR SPÉCIALITÉS === */
+/* ============================================================= */
+
+// Affichage du SELECT de l'établissement
 function displayHospEtablissement(){
 	initContent(false);
 
@@ -207,6 +235,7 @@ function displayHospEtablissement(){
 	}
 }
 
+// Affichage du SELECT de la spécialité
 function displayHospSpecialite(){
 
 	// Établissement choisi
@@ -232,11 +261,16 @@ function displayHospSpecialite(){
 		})
 
 		// 	Remplissage du Select	
-		var selectSpecialite = document.getElementById("selectSpecialite");
+		var atLeastOne = false;
+		var selectSpecialite = document.getElementById("selectSpecialite");		
 		selectSpecialite.options.length = 0;
 		selectSpecialite.options[0] = new Option(MSG_CHOISIR);
 		for(var s in tabSpeUnique){
 			selectSpecialite.options[selectSpecialite.options.length] = new Option(tabSpeUnique[s]);
+			atLeastOne = true;
+		}
+		if(!atLeastOne){
+			fillElementText("statusInfo", MSG_NO_SPECIALITE);
 		}
 	}else{
 		// On cache le Select des spécialités
@@ -244,6 +278,7 @@ function displayHospSpecialite(){
 	}
 }
 
+// Affichage du résultat en fonction de l'établissement et de la spécilité choisi
 function displayHospEtabSpeData(){	
 	// On cache tout le bazard	
 	initContent(false);
@@ -274,11 +309,15 @@ function displayHospEtabSpeData(){
 	// On rempli et on  affiche le tableau
 	fillTableau("tableauData", tabActParSpe, MSG_LISTE_ACTS_PAR_SPECIALITE);
 	displayElement("zoneTableau");
-	fillElement("statusInfo", MSG_NBSP);		
-
+	fillElementText("statusInfo", MSG_INFO_NB_HOSPITALISATION_ETAB_SPE.replace("{0}", tabActParSpe.length)
+									.replace("{1}", specialiteChoisi)
+									.replace("{2}", tabInfoEtablissement[0].nom));
 }
 
 
+/* ============== */
+/* === DIVERS === */
+/* ============== */
 
 // Permet de mettre en évidence le bouton du menu sur lequel on a cliqué
 function setMenuSelected(current){	
@@ -297,7 +336,7 @@ function setMenuSelected(current){
 
 
 // Construction de la Table avec les données reçues en paramètre
-function getTableau(tab, hasHeader){
+function getFilledTableau(tab, hasHeader){
 
 	var nbElement = tab.length;
 	var table = document.createElement("table");
@@ -327,7 +366,11 @@ function getTableau(tab, hasHeader){
 		row = tableBody.insertRow(-1);
 		for (var p in tab[i]) {
 			var cell = row.insertCell(-1);
-			cell.innerHTML = tab[i][p];
+			if(p == "no_tel"){
+				cell.innerHTML = formatPhoneNumber(tab[i][p]);
+			}else{
+				cell.innerHTML = tab[i][p];
+			}
 		}
 	}
 
